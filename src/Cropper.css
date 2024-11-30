@@ -1,0 +1,8 @@
+.cropper {
+    width: 320px;
+    height: 320px;
+    border: 2px dotted blue;
+    background-color: transparent;
+    position: absolute;
+    cursor: move;
+}
