@@ -169,11 +169,11 @@ const ImageCanvas = () => {
     const loadImage = async(idx) => {
         if (idx < 0) {
             if (cachePromise == null) {
-                setImageUrl(cacheRef.current[CACHE_PARTITION_SIZE])
-                return null
+                return cacheRef.current[CACHE_PARTITION_SIZE]
             }
         }
 
+        // TODO: Get rid of set imageUrl and just turn into normal array. image will be a ref.
         const idxToUrl = () => {
             return IMAGE_GET_URL + `//${idx}`
         }
