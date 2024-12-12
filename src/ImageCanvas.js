@@ -11,6 +11,8 @@ const ImageCanvas = () => {
     const [imageIdx, setImageIdx] = useState(0)
     /* imageUrl to the image at imageIdx of frames */
     const [imageUrl, setImageUrl] = useState(null)
+    /* imageRef is the actual image we display onto a canvas */
+    const imageRef = useRef(null)
     /* Number of images */
     const [numImages, setNumImages] = useState(0)
 
@@ -100,10 +102,11 @@ const ImageCanvas = () => {
                 cacheRef.current.splice(-1 * shift, CACHE_SIZE + shift, cacheRef.current.slice(0, CACHE_SIZE + shift))
                 lastCachedIdx = temp + CACHE_SIZE + shift - 1
                 for (let i = -1; i >= shift; i -= 1) {
-                    if (idx < 0) {
-                        // TODO: set preceding elements all to null
-                    }
                     let idx = temp + i
+                    if (idx < 0) {
+                        cacheRef.current[i - shift] = null
+                        continue
+                    }
                     cacheRef.current[i - shift] = await loadImage(idx)
                     firstCachedIdx = idx
                 }
@@ -111,7 +114,8 @@ const ImageCanvas = () => {
                 for (let i = shift + CACHE_SIZE - 1; i >= 0; i -= 1) {
                     let idx = temp + i
                     if (idx < 0) {
-                        // TODO: set preceding elements all to null
+                        cacheRef.current[i - shift] = null
+                        continue
                     }
                     cacheRef.current[i - shift] = await loadImage(idx)
                     firstCachedIdx = idx
@@ -165,15 +169,8 @@ const ImageCanvas = () => {
     const loadImage = async(idx) => {
         if (idx < 0) {
             if (cachePromise == null) {
-                await axios.get(idxToUrl(), {
-                    responseType:'blob'
-                })
-                .then((response) => {
-                    const imageBlobUrl = URL.createObjectURL(response.data)
-                    setImageUrl(imageBlobUrl)
-                }).catch((error) => {
-                    console.error('Error fetching image:', error);
-                })
+                setImageUrl(cacheRef.current[CACHE_PARTITION_SIZE])
+                return null
             }
         }
 
@@ -184,7 +181,7 @@ const ImageCanvas = () => {
         if (idx >= firstCachedIdx && idx <= lastCachedIdx) {
             const idxInCache = idx - firstCachedIdx
             setImageUrl(cacheRef.current[idxInCache])
-            
+            return cacheRef.current[idxInCache]
         } else if (cachePromise == null) {
             await axios.get(idxToUrl(), {
                 responseType:'blob'
@@ -192,15 +189,18 @@ const ImageCanvas = () => {
             .then((response) => {
                 const imageBlobUrl = URL.createObjectURL(response.data)
                 setImageUrl(imageBlobUrl)
+                return imageBlobUrl
             }).catch((error) => {
                 console.error('Error fetching image:', error);
             })
         }
+        return null
     }
 
   return (
     <div>
-        {}
+        <canvas 
+        />
     </div>
   )
 }
