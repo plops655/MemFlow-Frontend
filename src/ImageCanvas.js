@@ -9,6 +9,8 @@ const ImageCanvas = () => {
 
     /* Index of current image in frames */
     const [imageIdx, setImageIdx] = useState(0);
+    /* image dimensions */
+    const [imgDims, setImgDims] = useState({width:0, height:0});
     /* imageRef is the actual image we display onto a canvas */
     const imageRef = useRef(null);
     /* Number of images */
@@ -139,9 +141,25 @@ const ImageCanvas = () => {
         return null
     }
 
+    const handleSeek = async(position) => {
+        setImageIdx(position);
+        if (FIRST_CACHED_IMG_IDX <= position && FINAL_CACHED_IMG_IDX >= position) {
+            setImg(cacheRef.current[position - FIRST_CACHED_IMG_IDX]);
+        } else {
+            await updateCacheRef();
+            updateCurrentImg();
+        }
+    };
+
   return (
-    <div>
-        <img ref={imageRef} src={null}/>
+    <div style={{
+        position: "relative",
+        width: imgDims.width,
+        height: imgDims.height,
+        backgroundColor: 'lightsalmon', 
+    }}>
+        <img ref={imageRef} src={""} alt="canvas" style={{width: "100%", height: "100%"}}/>
+        <Seekbar position={imageIdx} duration={numImages - 1} onSeek={handleSeek} />
     </div>
   )
 }

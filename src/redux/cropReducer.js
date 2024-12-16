@@ -3,8 +3,8 @@ import { SET_MOUSE_IS_DOWN, SET_MOUSE_LOWER_LEFT, SET_MOUSE_UPPER_RIGHT } from "
 /* The inital state where the mouse is not pressed down, the position of the lowerLeft corner and upperRight corner are (0,0) */
 const initialState = {
     mouseIsDown: false,
-    lowerLeft: {x:0, y:0},
-    upperRight: {x:0, y:0},
+    topLeft: {x:0, y:0},
+    lowerRight: {x:0, y:0},
 }
 
 const cropReducer = (state = initialState, action) => {
@@ -17,12 +17,12 @@ const cropReducer = (state = initialState, action) => {
         case SET_MOUSE_LOWER_LEFT:
             return {
                 ...state,
-                lowerLeft: action.payload,
+                topLeft: action.payload,
             };
         case SET_MOUSE_UPPER_RIGHT:
             return {
                 ...state,
-                upperRight: action.payload,
+                lowerRight: action.payload,
             };
         default:
             return state;
