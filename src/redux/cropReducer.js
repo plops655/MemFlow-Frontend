@@ -1,10 +1,11 @@
-import { SET_MOUSE_IS_DOWN, SET_MOUSE_LOWER_LEFT, SET_MOUSE_UPPER_RIGHT } from "./cropActions"
+import { SET_MOUSE_IS_DOWN, SET_MOUSE_START, SET_CROPPER_POSITION, SET_CROP_BOX_DIMS } from "./cropActions"
 
 /* The inital state where the mouse is not pressed down, the position of the lowerLeft corner and upperRight corner are (0,0) */
 const initialState = {
     mouseIsDown: false,
-    topLeft: {x:0, y:0},
-    lowerRight: {x:0, y:0},
+    mouseStart: {x:0, y:0},
+    cropperPos: {x:0, y:0},
+    cropDims: {width: 0, height: 0},
 }
 
 const cropReducer = (state = initialState, action) => {
@@ -14,15 +15,20 @@ const cropReducer = (state = initialState, action) => {
                 ...state,
                 mouseIsDown: action.payload,
             };
-        case SET_MOUSE_LOWER_LEFT:
+        case SET_CROP_BOX_DIMS:
             return {
                 ...state,
-                topLeft: action.payload,
+                cropDims: action.payload,
+            }
+        case SET_MOUSE_START:
+            return {
+                ...state,
+                mouseStart: action.payload,
             };
-        case SET_MOUSE_UPPER_RIGHT:
+        case SET_CROPPER_POSITION:
             return {
                 ...state,
-                lowerRight: action.payload,
+                cropperPos: action.payload,
             };
         default:
             return state;

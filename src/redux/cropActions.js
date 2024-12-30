@@ -1,18 +1,24 @@
 export const SET_MOUSE_IS_DOWN = "SET_MOUSE_IS_DOWN";
-export const SET_MOUSE_LOWER_LEFT = "SET_MOUSE_LOWER_LEFT";
-export const SET_MOUSE_UPPER_RIGHT = "SET_MOUSE_UPPER_RIGHT";
+export const SET_CROP_BOX_DIMS = "SET_CROP_BOX_DIMS";
+export const SET_MOUSE_START = "SET_MOUSE_START";
+export const SET_CROPPER_POSITION = "SET_CROPPER_POSITION";
 
 export const setMouseIsDown = (mouseIsDown) => ({
     type: SET_MOUSE_IS_DOWN,
     payload: mouseIsDown,
 });
 
-export const setMouseStartPoint = (mouse_lower_left)=> ({
-    type: SET_MOUSE_LOWER_LEFT,
-    payload: mouse_lower_left,
+export const setCropDims = (cropDims) => ({
+    type: SET_CROP_BOX_DIMS,
+    payload: cropDims,
 });
 
-export const setPosition = (mouse_upper_right) => ({
-    type: SET_MOUSE_UPPER_RIGHT,
-    payload: mouse_upper_right,
+export const setMouseStartPoint = (mouseStart)=> ({
+    type: SET_MOUSE_START,
+    payload: mouseStart,
+});
+
+export const setPosition = (cropperPos) => ({
+    type: SET_CROPPER_POSITION,
+    payload: cropperPos,
 });

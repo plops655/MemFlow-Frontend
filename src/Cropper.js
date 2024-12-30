@@ -5,12 +5,13 @@ import './Cropper.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { setMouseIsDown, setMouseStartPoint, setPosition } from './redux/cropActions'
 
-const Cropper = (imgDims) => {
+const Cropper = ({ x, y, imgDims }) => {
 
     const dispatch = useDispatch();
-    const mouseIsDown = useSelector((state) => state.cropper.mouseIsDown);
-    const mouseStartPoint = useSelector((state) => state.cropper.topLeft);
-    const position = useSelector((state) => state.cropper.lowerRight);
+    const mouseIsDown = useSelector((state) => state.crop.mouseIsDown);
+    const mouseStartPoint = useSelector((state) => state.crop.mouseStart);
+    setPosition({x: x, y: y})
+    const position = useSelector((state) => state.crop.cropperPos);
 
     const handleMouseDown = (e) => {
         const img = e.target.closest("div").querySelector("img");
@@ -35,7 +36,7 @@ const Cropper = (imgDims) => {
       if (!mouseIsDown) { return; }
       dx = e.clientX - mouseStartPoint.x;
       dy = e.clientY - mouseStartPoint.y;
-      const newPosition = {x: position + dx, y: position + dy};
+      const newPosition = {x: mouseStartPoint + dx, y: position + dy};
       dispatch(setMouseStartPoint({x: e.clientX, y: e.clientY}));
       dispatch(setPosition(newPosition));
     }

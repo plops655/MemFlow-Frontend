@@ -3,7 +3,7 @@ import { useSelector, useDispatch, useRef } from 'react-redux'
 import { Seekbar } from './react-seekbar'
 import axios from './axios'
 
-const ImageCanvas = () => {
+const ImageCanvas = ({ x, y }) => {
 
     const IMAGE_GET_URL = "";
 
@@ -53,9 +53,13 @@ const ImageCanvas = () => {
         }
     }, [])
 
+    useEffect(() => {
+        /* When APNG is loaded, update Cropper reference */
+
+    }, [])
+
     const updateCacheRef = async() => {
         const shift = imageIdx - FIRST_CACHED_IMG_IDX;
-        const temp = FIRST_CACHED_IMG_IDX
         if (shift >= 0) {
             /* The only possibility is shift === CACHE_SIZE */
             assert(shift === CACHE_SIZE, "shift must be CACHE_SIZE if non-negative");
@@ -152,14 +156,17 @@ const ImageCanvas = () => {
     };
 
   return (
-    <div style={{
+    <div>
+        <div style={{
         position: "relative",
         width: imgDims.width,
         height: imgDims.height,
         backgroundColor: 'lightsalmon', 
-    }}>
-        <img ref={imageRef} src={""} alt="canvas" style={{width: "100%", height: "100%"}}/>
+        }}>
+            <img ref={imageRef} src={""} alt="canvas" style={{width: "100%", height: "100%"}}/>
+        </div>
         <Seekbar position={imageIdx} duration={numImages - 1} onSeek={handleSeek} />
+        <Cropper x={x} y={y} imgDims={imgDims} />
     </div>
   )
 }
